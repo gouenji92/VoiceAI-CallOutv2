@@ -5,6 +5,11 @@
 [![Tests](https://img.shields.io/badge/tests-8%2F8%20passing-brightgreen)]()
 [![Agent](https://img.shields.io/badge/agent-4%2F4%20conversations-brightgreen)]()
 [![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)]()
+[![Models](https://img.shields.io/badge/models-auto--setup-blue)](./WHY_NO_MODELS_IN_GIT.md)
+[![Python](https://img.shields.io/badge/python-3.11-blue)]()
+[![License](https://img.shields.io/badge/license-MIT-green)]()
+
+> ⚠️ **PhoBERT models không có trong Git** (~500MB). Chạy `python setup_models.py` sau khi clone. [Tại sao?](./WHY_NO_MODELS_IN_GIT.md)
 
 ## ✨ Features
 - 🎯 **Intent Classification** (PhoBERT - Vietnamese)
