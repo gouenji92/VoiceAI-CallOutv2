@@ -98,7 +98,8 @@ python test_production.py
 
 ## Changelog (Phase summary)
 
-See `CHANGELOG.md` for a detailed list of changes included in this phase.
+- High-level narrative: `PHASE_SUMMARY.md`
+- Detailed changes: `CHANGELOG.md`
 
 ## License
 
