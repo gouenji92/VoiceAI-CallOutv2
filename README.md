@@ -1,34 +1,21 @@
-# VoiceAI-CallOutv2 — Complete AI Callbot System
+# VoiceAI-CallOutv2 — FastAPI + RL Threshold Tuning (Production Phase)
 
-🤖 **AI-powered Vietnamese callbot** with PhoBERT NLP, Deeppavlov Agent, and FastAPI backend.
+AI-powered Vietnamese callbot backend with PhoBERT intent classification, Deeppavlov agent, Supabase logging, and a reinforcement-learning (RL) module that learns per-intent confidence thresholds online.
 
-[![Tests](https://img.shields.io/badge/tests-8%2F8%20passing-brightgreen)]()
-[![Agent](https://img.shields.io/badge/agent-4%2F4%20conversations-brightgreen)]()
-[![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)]()
-[![Models](https://img.shields.io/badge/models-auto--setup-blue)](./WHY_NO_MODELS_IN_GIT.md)
-[![Python](https://img.shields.io/badge/python-3.11-blue)]()
-[![License](https://img.shields.io/badge/license-MIT-green)]()
+This README replaces previous docs to avoid confusion. It reflects the current, working setup verified on Windows (PowerShell) with Python 3.11.
 
-> ⚠️ **PhoBERT models không có trong Git** (~500MB). Chạy `python setup_models.py` sau khi clone. [Tại sao?](./WHY_NO_MODELS_IN_GIT.md)
+## What’s new in this phase
 
-## ✨ Features
-- 🎯 **Intent Classification** (PhoBERT - Vietnamese)
-- 🧠 **Dialog Management** (Deeppavlov Agent)
-- 📞 **Call Orchestration** (Asterisk integration ready)
-- 🔒 **JWT Authentication** with bcrypt
-- 📊 **Workflow Versioning** (Git-like system)
-- 🗄️ **Supabase PostgreSQL** database
-- 🧪 **100% Test Coverage**
+- Retrained intent model with augmented data (3 weak intents improved)
+- Model manager defaults to the latest retrained model
+- RL Threshold Tuner (epsilon-greedy + UCB1) integrated into NLP pipeline
+- RL Monitoring router and a terminal dashboard
+- End-to-end tests and quick sanity scripts
+- Fixed routing and stability issues (0.0.0.0 vs localhost, RL status)
 
-## 🚀 Quick Start (Windows PowerShell)
+## Quick start (Windows PowerShell)
 
-### 1. Clone Repository
-```powershell
-git clone https://github.com/gouenji92/VoiceAI-CallOutv2.git
-cd VoiceAI-CallOutv2
-```
-
-### 2. Setup Environment
+1) Create environment and install deps
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
@@ -36,137 +23,83 @@ python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
 
-### 3. Setup Models (AUTO - chạy 1 lần duy nhất)
+2) Configure environment
 ```powershell
-python setup_models.py
-```
-**Chú ý:** Script này sẽ tự động train PhoBERT model (~5-10 phút). Model không được push lên Git vì quá lớn (~500MB).
-
-### 4. Configure Environment
-```powershell
-# Copy file mẫu
 cp .env.example .env
-
-# Edit .env và điền thông tin Supabase
-# SUPABASE_URL=https://your-project.supabase.co
-# SUPABASE_KEY=your-service-role-key
+# Edit .env with your Supabase project URL and service role key
 ```
 
-### 5. Run System (3 terminals)
+3) Start API (use localhost, not 0.0.0.0 in the browser)
 ```powershell
-# Terminal 1: Agent Server
-python agent/http_agent.py
-
-# Terminal 2: Backend API
-python -X utf8 -m uvicorn app.main:app --reload
-
-# Terminal 3: Test System
-python test_with_agent.py
+python -X utf8 -m uvicorn app.main:app --reload --port 8000
+# Visit: http://localhost:8000/docs
 ```
 
-## 📦 Why Models Are Not in Git?
-
-PhoBERT models are **~500MB** and exceed GitHub file size limits. Instead:
-- ✅ Run `python setup_models.py` after clone (auto-trains from scratch)
-- ✅ Takes 5-10 minutes on first setup
-- ✅ Model saved locally in `models/phobert-intent-classifier/`
-
-## 🧪 Testing
-
+4) Optional: Start Agent (if your dialog manager needs it)
 ```powershell
-# Full system test (8 API tests)
-python test_full_system.py
-
-# Agent integration test (4 conversation flows)
-python test_with_agent.py
+python agent/run_agent.py
 ```
 
-**Expected Results:**
-- ✅ 8/8 API tests passing
-- ✅ 4/4 Agent conversations passing
-- ✅ 100% test coverage
+## RL monitoring
 
-## 📚 Documentation
+- Status: GET http://localhost:8000/api/rl-monitor/status
+- Thresholds: GET http://localhost:8000/api/rl-monitor/thresholds
 
-- **[HUONG_DAN_CHAY_PROJECT_V2.txt](./HUONG_DAN_CHAY_PROJECT_V2.txt)** - Hướng dẫn chạy đầy đủ (Vietnamese)
-- **[HOW_TO_TEST.md](./HOW_TO_TEST.md)** - Testing guide
-- **[TONG_HOP_CONG_VIEC.txt](./TONG_HOP_CONG_VIEC.txt)** - Complete work summary
-- **[SETUP_GUIDE.md](./SETUP_GUIDE.md)** - Detailed setup instructions
-
-## 🏗️ Architecture
-
-```
-VoiceAI-CallOutv2/
-├── agent/                  # Deeppavlov Agent (dialog logic)
-│   ├── http_agent.py      # HTTP server (port 4242)
-│   └── skill.py           # Dialog skills
-├── app/                   # FastAPI Backend
-│   ├── routers/           # API endpoints (/auth, /workflows, /calls)
-│   ├── services/          # Business logic (NLP, dialog, Asterisk)
-│   └── models.py          # Pydantic schemas
-├── models/                # PhoBERT models (NOT in Git)
-│   └── phobert-intent-classifier/  # Auto-generated by setup_models.py
-├── sql/                   # Database schema & migrations
-├── tests/                 # Test suites
-└── setup_models.py        # Auto setup script
-```
-
-## 🔧 Tech Stack
-
-- **Backend:** FastAPI 0.115.12, Python 3.11
-- **Database:** Supabase (PostgreSQL 15)
-- **NLP:** HuggingFace Transformers, PhoBERT
-- **Agent:** Deeppavlov (HTTP-based)
-- **Auth:** JWT + bcrypt
-- **Testing:** pytest, requests
-
-## 📊 Database Schema
-
-Run in Supabase SQL Editor:
-```sql
--- Complete schema with RLS policies
-\i sql/schema_complete.sql
-```
-
-Tables: `accounts`, `workflows`, `workflow_versions`, `calls`, `conversation_logs`, `call_intents`, `call_entities`, `feedback`, `reports`
-
-## 🚨 Troubleshooting
-
-### "Model not found" error
+Terminal dashboard (optional):
 ```powershell
-python setup_models.py  # Re-run setup
+python monitor_rl_dashboard.py
 ```
 
-### "Internal Server Error" on registration
-Check Supabase RLS policies:
-```sql
-\i sql/disable_rls_for_app_tables.sql
-```
+## Testing shortcuts
 
-### Agent connection refused
+Minimal API check:
 ```powershell
-python agent/http_agent.py  # Start Agent server first
+python quick_test.py
 ```
 
-## 🤝 Contributing
+Validate retrained model on weak intents (direct HF inference, no service):
+```powershell
+python test_retrained_model.py
+```
 
-1. Fork the repo
-2. Create feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit changes (`git commit -m 'Add AmazingFeature'`)
-4. Push to branch (`git push origin feature/AmazingFeature`)
-5. Open Pull Request
+API integration + RL selection (uses FastAPI services):
+```powershell
+python test_api_retrained.py
+```
 
-## 📝 License
+Production-style test sweep (requires server running):
+```powershell
+python test_production.py
+```
 
-This project is licensed under the MIT License.
+## Endpoints (high level)
 
-## 👥 Authors
+- Health: GET `/`
+- Auth: `/api/auth/*` (requires Supabase + JWT)
+- Workflows: `/api/workflows/*` (requires auth)
+- Calls: `/api/calls/start_call`, `/api/calls/webhook`
+	- Webhook body schema:
+		- `call_id` (UUID in DB)
+		- `speech_to_text` (string)
+- Feedback: `/api/feedback/rl-reward` (no auth) and `/api/feedback/rl-stats` (auth)
+- RL Monitor: `/api/rl-monitor/status`, `/api/rl-monitor/thresholds`, ...
 
-- **gouenji92** - *Initial work* - [GitHub](https://github.com/gouenji92)
+## Models
 
-## 🙏 Acknowledgments
+- Default model path is set to the latest retrained folder in `app/services/model_manager.py`.
+- Large model files are not tracked by Git. See `.gitignore`.
 
-- PhoBERT by VinAI Research
-- Deeppavlov by MIPT
-- FastAPI by Sebastián Ramírez
-- Supabase team
+## Troubleshooting
+
+- Browser cannot open 0.0.0.0: Use http://localhost:8000 or http://127.0.0.1:8000
+- RL status 500: has been fixed (attribute name mismatch). Pull latest.
+- Supabase errors with UUID: Webhook requires a real `call_id` present in `calls` table.
+- Sentiment model warning: The service falls back if the public model is unavailable.
+
+## Changelog (Phase summary)
+
+See `CHANGELOG.md` for a detailed list of changes included in this phase.
+
+## License
+
+MIT

@@ -94,6 +94,15 @@ CREATE TABLE IF NOT EXISTS reports (
     created_at timestamptz DEFAULT now()
 );
 
+CREATE TABLE IF NOT EXISTS rl_feedback (
+    id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+    call_id text NOT NULL,
+    reward double precision NOT NULL,
+    final_intent text,
+    notes text,
+    created_at timestamptz DEFAULT now()
+);
+
 -- =====================================================
 -- INDEXES
 -- =====================================================
@@ -101,6 +110,9 @@ CREATE TABLE IF NOT EXISTS reports (
 CREATE INDEX IF NOT EXISTS idx_calls_workflow_id ON calls(workflow_id);
 CREATE INDEX IF NOT EXISTS idx_convlogs_call_id ON conversation_logs(call_id);
 CREATE INDEX IF NOT EXISTS idx_feedback_call_id ON feedback(call_id);
+CREATE INDEX IF NOT EXISTS idx_rl_feedback_call_id ON rl_feedback(call_id);
+CREATE INDEX IF NOT EXISTS idx_rl_feedback_created_at ON rl_feedback(created_at);
+CREATE INDEX IF NOT EXISTS idx_rl_feedback_reward ON rl_feedback(reward);
 
 -- =====================================================
 -- RLS: CHỈ BẬT CHO ACCOUNTS (Đăng ký công khai)
@@ -133,6 +145,7 @@ ALTER TABLE call_intents DISABLE ROW LEVEL SECURITY;
 ALTER TABLE call_entities DISABLE ROW LEVEL SECURITY;
 ALTER TABLE feedback DISABLE ROW LEVEL SECURITY;
 ALTER TABLE reports DISABLE ROW LEVEL SECURITY;
+ALTER TABLE rl_feedback DISABLE ROW LEVEL SECURITY;
 
 -- =====================================================
 -- DỌN DẸP: XÓA CÁC POLICIES CŨ (nếu có)

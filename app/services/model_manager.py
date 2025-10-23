@@ -23,7 +23,18 @@ class ModelManager:
         if not self._initialized:
             self._model = None
             self._tokenizer = None
-            self._model_path = os.path.abspath('./models/phobert-intent-classifier')
+            # Ưu tiên retrained model → v3 → classifier cũ (production waterfall)
+            retrained_path = os.path.abspath('./models/phobert-intent-v3-retrain-20251023_232548/final')
+            v3_path = os.path.abspath('./models/phobert-intent-v3/final')
+            old_path = os.path.abspath('./models/phobert-intent-classifier')
+            
+            if os.path.exists(retrained_path):
+                self._model_path = retrained_path
+            elif os.path.exists(v3_path):
+                self._model_path = v3_path
+            else:
+                self._model_path = old_path
+            
             self._model_lock = threading.Lock()
             self._version = 0
             # Lưu trữ phiên bản trước để rollback

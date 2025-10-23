@@ -12,7 +12,8 @@ ENV/
 .env
 
 # Models (quá lớn cho Git)
-models/phobert-intent-classifier/
+# Ignore all local model artifacts (large files)
+models/
 
 # IDE
 .vscode/
@@ -25,3 +26,4 @@ logs/
 # Testing
 .pytest_cache/
 .coverage
+test_production_results.json

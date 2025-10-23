@@ -1,0 +1,201 @@
+text,label
+Không biết phải làm sao nhé,unknown
+Giúp tôi tạo lịch hẹn,dat_lich
+Tôi muốn đặt cuộc hẹn ạ,dat_lich
+nhiều hay lắm,cam_on
+Giỏi lắm,cam_on
+Không rõ lắm ạ,unknown
+Cho tôi biết về lịch làm việc,hoi_thong_tin
+ạ tạm biệt,tam_biet
+Hẹn gặp lại ơi,tam_biet
+Có thể cho tôi biết thêm không?,hoi_thong_tin
+Tôi muốn tìm hiểu về dịch vụ ạ,hoi_thong_tin
+Goodbye nhé,tam_biet
+Tôi phải đi đây,tam_biet
+Cho tôi biết về chi phí,hoi_thong_tin
+Chào bạn,tam_biet
+Kết thúc đi ạ,tam_biet
+Có thể cho tôi nắm thêm không?,hoi_thong_tin
+Hay quá nhé,cam_on
+Không rõ lắm,unknown
+Tôi dự định tìm hiểu về dịch vụ,hoi_thong_tin
+Tốt quá,cam_on
+Tôi có thể đặt lịch được không? ạ,dat_lich
+Giỏi lắm nhé,cam_on
+Tôi không biết,unknown
+Cho tôi biết thêm chi tiết ạ,hoi_thong_tin
+Thông tin về chi phí,hoi_thong_tin
+Lặp lại được không?,unknown
+Cho tôi biết về giá cả,hoi_thong_tin
+Cám ơn sự giúp đỡ,cam_on
+Tuyệt vời ạ,cam_on
+Đăng ký lịch hẹn,dat_lich
+Tôi cần đăng ký một cuộc hẹn,dat_lich
+Tôi muốn tìm hiểu lịch làm việc,hoi_thong_tin
+Có thể cho tôi biết thêm không? nhé,hoi_thong_tin
+Cảm ơn bạn nhiều ơi,cam_on
+hiểu không rõ,unknown
+Tuyệt vời nhé,cam_on
+Cám ơn nhiều,cam_on
+Goodbye,tam_biet
+Có thể cho tôi biết quy trình không,hoi_thong_tin
+Tôi cần tư vấn về giá cả,hoi_thong_tin
+Chào nhé ơi,tam_biet
+Tôi định đặt một cái lịch hẹn,dat_lich
+book cuộc hẹn giúp tôi,dat_lich
+Cảm ơn bạn nhiều,cam_on
+Kết thúc cuộc gọi nhé,tam_biet
+Xin hẹn lịch,dat_lich
+Tôi muốn tạo lịch hẹn,dat_lich
+Cám ơn sự giúp đỡ nhé,cam_on
+Tôi bị lạc đề rồi,unknown
+nắm được không rõ,unknown
+Chào tạm biệt ơi,tam_biet
+Xin đặt lịch vào thứ 2 tuần sau,dat_lich
+Thank you,cam_on
+Tôi không hiểu ạ,unknown
+Xin hỏi về dịch vụ,hoi_thong_tin
+Tốt quá nhé,cam_on
+Tôi không nắm được,unknown
+Hẹn gặp sau ạ,tam_biet
+nghe không rõ,unknown
+Chào nhé,tam_biet
+Tôi nghe rõ bối rối,unknown
+Tôi muốn đặt cuộc hẹn nhé,dat_lich
+Tôi có thể đăng ký lịch được không?,dat_lich
+Tôi dự định hẹn một cái lịch hẹn,dat_lich
+Không biết phải làm sao ạ,unknown
+Cho tôi biết thêm chi tiết,hoi_thong_tin
+Kết thúc đi nhé,tam_biet
+nghe rõ không rõ,unknown
+Cảm ơn nhé,cam_on
+Tôi muốn tìm hiểu về dịch vụ nhé,hoi_thong_tin
+Hay quá,cam_on
+Hẹn gặp lại,tam_biet
+Sản phẩm này giá bao nhiêu?,hoi_thong_tin
+Bạn nói gì tôi không nghe rõ ơi,unknown
+Tôi biết bối rối,unknown
+Tôi có thể đặt lịch được không? nhé,dat_lich
+bạn nhiều cảm ơn,cam_on
+nắm được lại được không,unknown
+Hả? nhé,unknown
+Tôi có thể đặt lịch được không?,dat_lich
+Có thể cung cấp tôi biết thêm không?,hoi_thong_tin
+Tôi cần tư vấn,hoi_thong_tin
+Kết thúc ạ,tam_biet
+Hẹn gặp lại ,tam_biet
+Hả?,unknown
+Kết thúc đi,tam_biet
+Cho tôi hẹn lịch,dat_lich
+ạ bye,tam_biet
+lịch làm việc ra sao,hoi_thong_tin
+Tôi cần một cuộc hẹn nhanh,dat_lich
+Cám ơn nhé,cam_on
+Tôi bị lạc đề rồi ơi,unknown
+Tôi muốn đặt một cái lịch hẹn nhé,dat_lich
+đăng ký cuộc hẹn giúp tôi,dat_lich
+Bye bye ạ,tam_biet
+bạn cảm ơn,cam_on
+Có thể giúp tôi đặt lịch không?,dat_lich
+Xin đăng ký lịch vào thứ 2 tuần sau,dat_lich
+Cảm ơn,cam_on
+Tôi muốn đặt cuộc hẹn,dat_lich
+Tôi muốn lên lịch lịch hẹn,dat_lich
+Cám ơn sự giúp đỡ ạ,cam_on
+Thanks rất nhiều,cam_on
+Lặp lại được không? nhé,unknown
+Thank you nhé,cam_on
+Làm ơn tạo lịch cho tôi,dat_lich
+Xin hỏi về thủ tục,hoi_thong_tin
+rõ không rõ,unknown
+Cảm ơn bạn nhiều nhé,cam_on
+Kết thúc cuộc gọi,tam_biet
+Tôi muốn đặt một cái lịch hẹn,dat_lich
+Hẹn gặp lại nhé,tam_biet
+Cảm ơn nha,cam_on
+"Xin chào, tôi muốn hỏi thông tin ạ",hoi_thong_tin
+Rất hữu ích,cam_on
+Cho tôi rõ thêm chi tiết,hoi_thong_tin
+Giải thích giúp tôi về vấn đề này,hoi_thong_tin
+Chào tạm biệt,tam_biet
+Có thể đăng ký cho tôi một cuộc hẹn không,dat_lich
+"Xin chào, tôi muốn hỏi thông tin",hoi_thong_tin
+biết không rõ,unknown
+Tốt quá ạ,cam_on
+Hay quá ạ,cam_on
+Cho tôi hẹn vào 9h sáng mai ạ,dat_lich
+Tôi có thể hẹn lịch được không,dat_lich
+Tôi phải đi đây ạ,tam_biet
+Thank you ạ,cam_on
+Nói lại đi,unknown
+Tôi muốn đặt một cái lịch hẹn ạ,dat_lich
+Hẹn gặp sau,tam_biet
+Thông tin về lịch làm việc,hoi_thong_tin
+Nói lại đi ơi,unknown
+Cám ơn ạ,cam_on
+Tôi muốn tìm hiểu về dịch vụ,hoi_thong_tin
+nhiều tốt quá,cam_on
+Đặt lịch hẹn khám bệnh,dat_lich
+rõ lại được không,unknown
+"Xin chào, tôi muốn hỏi thông tin nhé",hoi_thong_tin
+Rất hữu ích nhé,cam_on
+Tạm biệt nhé,tam_biet
+Kết thúc cuộc gọi ạ,tam_biet
+Chào ạ,tam_biet
+Chi phí dịch vụ ra sao?,hoi_thong_tin
+Tôi không hiểu,unknown
+Đặt lịch hẹn khám bệnh nhé,dat_lich
+Tôi cần một cuộc hẹn gấp,dat_lich
+Tôi rõ bối rối,unknown
+Tôi đang nghe,unknown
+Bạn nói gì tôi không nghe rõ,unknown
+Chào tạm biệt nhé,tam_biet
+Tôi phải đi đây nhé,tam_biet
+Cái này là sao?,unknown
+Book lịch giúp tôi nhé,dat_lich
+Tôi định book cuộc hẹn,dat_lich
+Cho tôi biết thêm chi tiết nhé,hoi_thong_tin
+Hẹn gặp sau nhé,tam_biet
+Cảm ơn ,cam_on
+Giúp tôi đặt lịch hẹn,dat_lich
+Giải thích giúp tôi về vấn đề này ạ,hoi_thong_tin
+Tạm biệt ơi,tam_biet
+nhiều cảm ơn,cam_on
+Bye bye,tam_biet
+ bye,tam_biet
+Sản phẩm này giá bao nhiêu? nhé,hoi_thong_tin
+Xin hỏi về chính sách,hoi_thong_tin
+Tôi bị lạc đề rồi nhé,unknown
+sản phẩm như thế nào,hoi_thong_tin
+Chào nhé ạ,tam_biet
+Sản phẩm này giá bao nhiêu? ạ,hoi_thong_tin
+Quy trình đăng ký thế nào?,hoi_thong_tin
+Tôi đang bối rối quá,unknown
+Đặt lịch hẹn khám bệnh ạ,dat_lich
+"Xin chào, tôi muốn muốn biết thông tin",hoi_thong_tin
+Tạm biệt,tam_biet
+Tạm biệt nha,tam_biet
+Cảm ơn nhé,cam_on
+Xin book lịch vào thứ 2 tuần sau,dat_lich
+Giỏi lắm ạ,cam_on
+Chào ,tam_biet
+Cho tôi hẹn vào 9h sáng mai,dat_lich
+Tôi muốn tìm hiểu quy trình,hoi_thong_tin
+Thanks ạ,cam_on
+Rất hữu ích ạ,cam_on
+Cảm ơn ạ,cam_on
+Tôi không hiểu nhé,unknown
+biết lại được không,unknown
+Không rõ lắm nhé,unknown
+Không biết phải làm sao,unknown
+điều kiện ra sao,hoi_thong_tin
+Tuyệt vời,cam_on
+Chào nha,tam_biet
+Có thể giúp tôi book lịch không?,dat_lich
+Bye bye nhé,tam_biet
+Giải thích giúp tôi về vấn đề này nhé,hoi_thong_tin
+Bạn nói gì tôi không nghe rõ nhé,unknown
+Cho tôi hẹn vào 9h sáng mai nhé,dat_lich
+Hả? ạ,unknown
+Goodbye ạ,tam_biet
+Lặp lại được không? ơi,unknown
