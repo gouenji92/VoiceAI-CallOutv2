@@ -1,0 +1,13 @@
+fastapi
+uvicorn[standard]
+pydantic-settings
+httpx
+supabase-py
+passlib[bcrypt]
+python-jose[cryptography]
+transformers
+torch
+scikit-learn
+pandas
+dp-agent
+deepdiff
