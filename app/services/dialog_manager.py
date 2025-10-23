@@ -12,6 +12,10 @@ async def get_bot_response(call_id: str, workflow_json: Dict, nlp_data: Dict[str
     Gửi state (NLP data) và workflow (logic) đến Deeppavlov Agent.
     """
     
+    print(f"[Dialog Manager] Xu ly response cho call_id: {call_id}")
+    print(f"[Dialog Manager] Intent: {nlp_data.get('intent')} ({nlp_data.get('intent_confidence', 0):.2f})")
+    print(f"[Dialog Manager] Sentiment: {nlp_data.get('sentiment', 'unknown')}")
+    
     # Tạo payload (dữ liệu gửi đi)
     # Agent sẽ nhận được `workflow_json` và `nlp_data` trong `state`
     payload = {
@@ -21,6 +25,7 @@ async def get_bot_response(call_id: str, workflow_json: Dict, nlp_data: Dict[str
             "nlp_data": nlp_data
         }
     }
+    print(f"[Dialog Manager] Gui payload toi Agent...")
     
     try:
         response = await client.post("/", json=payload)
@@ -31,6 +36,19 @@ async def get_bot_response(call_id: str, workflow_json: Dict, nlp_data: Dict[str
         # Trích xuất câu trả lời và hành động
         bot_response_text = agent_data.get("response", "Loi: Agent khong tra loi.")
         action = agent_data.get("action", None) # vd: "hangup", "transfer"
+        
+        # Lưu response của bot vào conversation_logs
+        try:
+            from .nlp_service import save_conversation_log
+            save_conversation_log(
+                call_id=call_id,
+                speaker='bot',
+                text=bot_response_text,
+                intent=None,  # Bot response không cần intent
+                confidence=None
+            )
+        except Exception as e:
+            print(f"[Dialog Manager] Lỗi khi lưu response: {str(e)}")
         
         return {
             "bot_response_text": bot_response_text,

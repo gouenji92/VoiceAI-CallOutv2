@@ -1,0 +1,253 @@
+================================================================================
+  HƯỚNG DẪN CHẠY PROJECT VOICEAI-CALLOUTV2 (CẬP NHẬT 100%)
+  Bao gồm: Backend + Database + NLP + Deeppavlov Agent
+================================================================================
+
+📋 YÊU CẦU HỆ THỐNG:
+  - Python 3.11
+  - Virtual environment đã cài đặt (.venv)
+  - File .env với SUPABASE_URL và SUPABASE_KEY
+  - Port 8000 (Backend) và Port 4242 (Agent) không bị chiếm dụng
+
+================================================================================
+🚀 CÁCH CHẠY PROJECT HOÀN CHỈNH (3 TERMINALS)
+================================================================================
+
+⚠️  QUAN TRỌNG: Cần mở 3 terminal riêng biệt!
+
+┌─────────────────────────────────────────────────────────────────────┐
+│ TERMINAL 1: DEEPPAVLOV AGENT (Port 4242)                           │
+└─────────────────────────────────────────────────────────────────────┘
+
+  cd C:\Users\Admin\VoiceAI
+  .\.venv\Scripts\Activate.ps1
+  python agent/http_agent.py
+
+  Kết quả mong đợi:
+    ============================================================
+      🤖 DEEPPAVLOV AGENT SERVER (HTTP)
+      Running on: http://localhost:4242
+    ============================================================
+    INFO:     Application startup complete.
+
+  ⚠️  GIỮ TERMINAL NÀY MỞ - ĐỪNG TẮT!
+
+┌─────────────────────────────────────────────────────────────────────┐
+│ TERMINAL 2: BACKEND API (Port 8000)                                │
+└─────────────────────────────────────────────────────────────────────┘
+
+  cd C:\Users\Admin\VoiceAI
+  .\.venv\Scripts\Activate.ps1
+  python -X utf8 -m uvicorn app.main:app --reload
+
+  Kết quả mong đợi:
+    INFO:     Uvicorn running on http://127.0.0.1:8000
+    Ket noi Supabase thanh cong!
+    INFO:app.services.model_manager:Đã tải mô hình thành công
+    Dialog Manager (HTTP Client) da san sang goi Agent...
+    INFO:     Application startup complete.
+
+  ⚠️  GIỮ TERMINAL NÀY MỞ - ĐỪNG TẮT!
+
+┌─────────────────────────────────────────────────────────────────────┐
+│ TERMINAL 3: TEST & DEVELOPMENT                                     │
+└─────────────────────────────────────────────────────────────────────┘
+
+  cd C:\Users\Admin\VoiceAI
+  .\.venv\Scripts\Activate.ps1
+
+  # Test hệ thống cơ bản (8 tests)
+  python test_full_system.py
+
+  # Test với Agent (4 conversations)
+  python test_with_agent.py
+
+  Kết quả mong đợi:
+    🎉 THÀNH CÔNG! Hệ thống hoạt động hoàn chỉnh 100%
+    ✅ Backend API: OK
+    ✅ Database: OK
+    ✅ NLP PhoBERT: OK
+    ✅ Deeppavlov Agent: OK
+
+
+================================================================================
+📌 LỆNH NHANH (COPY & PASTE)
+================================================================================
+
+┌─────────────────────────────────────────────────────────────────────┐
+│ Terminal 1: Agent Server                                           │
+└─────────────────────────────────────────────────────────────────────┘
+cd C:\Users\Admin\VoiceAI
+.\.venv\Scripts\Activate.ps1
+python agent/http_agent.py
+
+┌─────────────────────────────────────────────────────────────────────┐
+│ Terminal 2: Backend API                                            │
+└─────────────────────────────────────────────────────────────────────┘
+cd C:\Users\Admin\VoiceAI
+.\.venv\Scripts\Activate.ps1
+python -X utf8 -m uvicorn app.main:app --reload
+
+┌─────────────────────────────────────────────────────────────────────┐
+│ Terminal 3: Test                                                   │
+└─────────────────────────────────────────────────────────────────────┘
+cd C:\Users\Admin\VoiceAI
+.\.venv\Scripts\Activate.ps1
+python test_with_agent.py
+
+================================================================================
+🔍 KIỂM TRA HỆ THỐNG HOẠT ĐỘNG
+================================================================================
+
+Test Agent:
+  curl http://localhost:4242/health
+  
+  Kết quả: {"status":"ok","message":"Agent server is running"}
+
+Test Backend API:
+  curl http://127.0.0.1:8000
+  
+  Kết quả: {"status":"ok","message":"Welcome to VoiceAI API"}
+
+Mở Swagger UI (API Documentation):
+  http://127.0.0.1:8000/docs
+
+Test đầy đủ hệ thống:
+  python test_full_system.py     # 8 tests cơ bản
+  python test_with_agent.py      # 4 tests với Agent
+
+================================================================================
+🔧 XỬ LÝ LỖI THƯỜNG GẶP
+================================================================================
+
+LỖI 1: "No module named 'xyz'"
+  Giải pháp: Cài đặt lại dependencies
+    pip install -r requirements.txt
+
+LỖI 2: "Address already in use" (Port 8000 hoặc 4242 bị chiếm)
+  Giải pháp A: Tìm và tắt tiến trình đang dùng port
+    # Tìm process đang dùng port 8000
+    netstat -ano | findstr :8000
+    # Tắt process (thay <PID> bằng số process ID)
+    taskkill /PID <PID> /F
+    
+  Giải pháp B: Tắt tất cả Python processes
+    Get-Process | Where-Object {$_.ProcessName -eq "python"} | Stop-Process -Force
+
+LỖI 3: "Supabase connection failed"
+  Giải pháp: Kiểm tra file .env có đúng SUPABASE_URL và SUPABASE_KEY
+    # File .env phải có:
+    SUPABASE_URL=https://xxx.supabase.co
+    SUPABASE_KEY=eyJxxx...
+
+LỗI 4: "Row-level security policy violated"
+  Giải pháp: Chạy script SQL để tắt RLS
+    Vào Supabase Dashboard > SQL Editor
+    Chạy file: sql/disable_rls_for_app_tables.sql
+
+LỖI 5: "Agent server CHƯA chạy" hoặc "Khong the ket noi den Agent"
+  Giải pháp: 
+    - Kiểm tra Terminal 1 có đang chạy agent/http_agent.py không
+    - Test bằng: curl http://localhost:4242/health
+    - Nếu port 4242 bị chiếm, tìm và tắt process đó
+
+LỖI 6: Test lỗi "Field required" hoặc validation error
+  Giải pháp: Kiểm tra API schema trong Swagger docs
+    http://127.0.0.1:8000/docs
+    Xem đúng field names và types
+
+================================================================================
+📚 CÁC FILE QUAN TRỌNG
+================================================================================
+
+CẤU HÌNH:
+  .env                          - Cấu hình môi trường (SUPABASE credentials)
+  requirements.txt              - Danh sách dependencies Python
+
+BACKEND:
+  app/main.py                   - Entry point của FastAPI server
+  app/routers/                  - API endpoints (auth, workflows, calls)
+  app/services/                 - Business logic (NLP, Agent, Asterisk)
+
+AGENT:
+  agent/http_agent.py           - HTTP-based Deeppavlov Agent (KHUYẾN NGHỊ)
+  agent/run_agent.py            - ZMQ-based Agent (nâng cao)
+
+DATABASE:
+  sql/schema_complete.sql       - Schema database đầy đủ (9 tables)
+  sql/disable_rls_for_app_tables.sql - Script tắt RLS
+
+TESTING:
+  test_full_system.py           - Test toàn bộ API (8 tests)
+  test_with_agent.py            - Test với Agent (4 conversations)
+  quick_test.py                 - Script test nhanh 3 endpoints
+
+MODELS:
+  models/phobert-intent-classifier/ - PhoBERT model
+  train_intent_model.py         - Script train lại model
+
+DOCUMENTATION:
+  README.md                     - Tổng quan dự án
+  HUONG_DAN_CHAY_PROJECT.txt    - Hướng dẫn chạy (file này)
+  HOAN_THANH_100_PHAN_TRAM.txt  - Hướng dẫn hoàn thành 100%
+
+================================================================================
+🌐 API ENDPOINTS
+================================================================================
+
+AUTHENTICATION:
+  POST   /api/auth/register           - Đăng ký tài khoản
+  POST   /api/auth/token              - Đăng nhập (lấy JWT token)
+
+WORKFLOWS:
+  GET    /api/workflows/              - Lấy danh sách workflows
+  POST   /api/workflows/              - Tạo workflow mới
+  PUT    /api/workflows/{id}          - Tạo version cho workflow
+  GET    /api/workflows/{id}/versions - Xem lịch sử versions
+
+CALLS:
+  POST   /api/calls/start_call        - Bắt đầu cuộc gọi
+  POST   /api/calls/webhook           - Xử lý hội thoại
+    Body: {"call_id": "uuid", "speech_to_text": "text"}
+
+DOCS:
+  GET    /docs                        - Swagger UI
+  GET    /redoc                       - ReDoc
+  GET    /api/workflows/{id}/versions - Xem lịch sử versions
+  
+  POST   /api/calls/start_call        - Bắt đầu cuộc gọi
+  POST   /api/calls/webhook           - Xử lý hội thoại (webhook)
+
+  Swagger Docs: http://127.0.0.1:8000/docs
+
+================================================================================
+✅ KẾT QUẢ MẤU KHI CHẠY THÀNH CÔNG
+================================================================================
+
+Server khởi động:
+  INFO:     Uvicorn running on http://127.0.0.1:8000
+  INFO:     Application startup complete.
+  Ket noi Supabase thanh cong!
+  INFO:app.services.model_manager:Đã tải mô hình thành công
+
+Test thành công:
+  ✅ Đăng ký
+  ✅ Đăng nhập
+  ✅ Tạo workflow
+  ✅ Lấy workflows
+  ✅ Tạo version
+  ✅ Xem versions
+  ✅ Bắt đầu cuộc gọi
+  ✅ Test hội thoại
+  
+  Tổng kết: 8/8 tests passed (100%)
+
+================================================================================
+📞 HỖ TRỢ
+================================================================================
+
+  - Kiểm tra logs trong terminal để debug
+  - Xem file README.md để hiểu kiến trúc hệ thống
+  - Xem file .github/copilot-instructions.md để hiểu cấu trúc code
+
+================================================================================

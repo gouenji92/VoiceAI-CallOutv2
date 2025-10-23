@@ -1,9 +1,17 @@
+from functools import lru_cache
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
-from app.config import settings
+from app.config import Settings, settings
 from app.models import TokenData
 from app.database import supabase
+
+@lru_cache()
+def get_settings() -> Settings:
+    """
+    Returns cached settings instance to avoid reading the environment variables on every call
+    """
+    return Settings()
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/token")
 

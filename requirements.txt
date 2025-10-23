@@ -1,13 +1,45 @@
+# Core dependencies
+numpy==1.26.0
+scipy==1.11.3
+pandas
+
+# ML & NLP
+torch
+transformers==4.30.2
+sentencepiece
+tokenizers
+scikit-learn
+datasets
+
+# Web Framework
 fastapi
 uvicorn[standard]
 pydantic-settings
-httpx
-supabase-py
-passlib[bcrypt]
 python-jose[cryptography]
-transformers
-torch
-scikit-learn
-pandas
+
+# HTTP Client
+httpx
+
+# Database
+supabase-py
+
+# Security
+passlib[bcrypt]
+bcrypt==4.0.1  # Version 4.0.1 tương thích với passlib 1.7.4
+
+# Environment
+python-dotenv
+
+# Dialog Agent
 dp-agent
+
+# Asterisk Integration
+panoramisk
+
+# Utilities
 deepdiff
+python-multipart
+
+# Redis (for model worker)
+rq
+redis

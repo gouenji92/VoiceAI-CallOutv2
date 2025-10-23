@@ -1,0 +1,23 @@
+name: voiceai
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+    - numpy==1.26.0
+    - scipy==1.11.3
+    - transformers==4.35.2
+    - torch
+    - sentencepiece
+    - tokenizers
+    - scikit-learn
+    - pandas
+    - uvicorn
+    - fastapi
+    - httpx
+    - supabase
+    - python-dotenv
+    - datasets
+  - pydantic-settings

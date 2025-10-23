@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoiceAI - Test Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            padding: 20px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+        }
+        
+        .token-status {
+            background: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .tab {
+            padding: 12px 24px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .tab:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+        
+        .tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
+        
+        .section {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        .section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            color: #555;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        button {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-right: 10px;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        button.secondary {
+            background: #6c757d;
+        }
+        
+        button.danger {
+            background: #dc3545;
+        }
+        
+        .response {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            display: none;
+        }
+        
+        .response.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            display: block;
+        }
+        
+        .response.error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            display: block;
+        }
+        
+        .response pre {
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(0,0,0,0.05);
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        
+        .workflow-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #e0e0e0;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .workflow-item:hover {
+            border-color: #667eea;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .workflow-item.selected {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🚀 VoiceAI Test Dashboard</h1>
+        <p>Test toàn bộ hệ thống API - Auth, Workflows, Calls</p>
+        <div class="token-status" id="tokenStatus">
+            <strong>Token:</strong> <span id="tokenDisplay">Chưa đăng nhập</span>
+        </div>
+    </div>
+
+    <div class="tabs">
+        <div class="tab active" onclick="showSection('auth')">🔐 Auth</div>
+        <div class="tab" onclick="showSection('workflows')">📊 Workflows</div>
+        <div class="tab" onclick="showSection('calls')">📞 Calls</div>
+        <div class="tab" onclick="showSection('admin')">⚙️ Admin</div>
+    </div>
+
+    <!-- AUTH SECTION -->
+    <div class="section active" id="auth">
+        <h2>🔐 Authentication</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>Đăng ký</h3>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="regEmail" placeholder="test@gmail.com">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="regPassword" placeholder="Test123">
+                </div>
+                <div class="form-group">
+                    <label>Role</label>
+                    <select id="regRole">
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <button onclick="register()">Đăng ký</button>
+            </div>
+            
+            <div class="card">
+                <h3>Đăng nhập</h3>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="loginEmail" placeholder="test@gmail.com">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" placeholder="Test123">
+                </div>
+                <button onclick="login()">Đăng nhập</button>
+                <button class="danger" onclick="logout()">Logout</button>
+            </div>
+        </div>
+        <div id="authResponse" class="response"></div>
+    </div>
+
+    <!-- WORKFLOWS SECTION -->
+    <div class="section" id="workflows">
+        <h2>📊 Workflows Management</h2>
+        
+        <div class="grid">
+            <div class="card">
+                <h3>Tạo Workflow</h3>
+                <div class="form-group">
+                    <label>Tên Workflow</label>
+                    <input type="text" id="wfName" placeholder="Callbot đặt lịch">
+                </div>
+                <div class="form-group">
+                    <label>Mô tả</label>
+                    <textarea id="wfDesc" placeholder="Workflow tự động đặt lịch hẹn..."></textarea>
+                </div>
+                <button onclick="createWorkflow()">Tạo Workflow</button>
+            </div>
+            
+            <div class="card">
+                <h3>Danh sách Workflows</h3>
+                <button onclick="getWorkflows()">Lấy danh sách</button>
+                <div id="workflowList" style="margin-top: 15px;"></div>
+            </div>
+        </div>
+        
+        <div class="card" style="margin-top: 20px;">
+            <h3>Lưu Version mới</h3>
+            <div class="form-group">
+                <label>Workflow ID</label>
+                <input type="text" id="versionWfId" placeholder="UUID của workflow">
+            </div>
+            <div class="form-group">
+                <label>Workflow JSON</label>
+                <textarea id="versionJson" placeholder='{"nodes": [], "edges": []}'></textarea>
+            </div>
+            <div class="form-group">
+                <label>Mô tả thay đổi</label>
+                <input type="text" id="versionDesc" placeholder="Thêm node xác thực OTP">
+            </div>
+            <button onclick="createVersion()">Lưu Version</button>
+            <button class="secondary" onclick="getVersions()">Xem lịch sử</button>
+        </div>
+        
+        <div id="workflowResponse" class="response"></div>
+    </div>
+
+    <!-- CALLS SECTION -->
+    <div class="section" id="calls">
+        <h2>📞 Calls & Conversations</h2>
+        
+        <div class="grid">
+            <div class="card">
+                <h3>Bắt đầu cuộc gọi</h3>
+                <div class="form-group">
+                    <label>Workflow ID</label>
+                    <input type="text" id="callWfId" placeholder="UUID của workflow">
+                </div>
+                <div class="form-group">
+                    <label>Số điện thoại khách</label>
+                    <input type="text" id="callPhone" placeholder="0909123456">
+                </div>
+                <button onclick="startCall()">Bắt đầu gọi</button>
+            </div>
+            
+            <div class="card">
+                <h3>Test Webhook (Hội thoại)</h3>
+                <div class="form-group">
+                    <label>Call ID</label>
+                    <input type="text" id="webhookCallId" placeholder="UUID của cuộc gọi">
+                </div>
+                <div class="form-group">
+                    <label>User nói gì</label>
+                    <input type="text" id="webhookText" placeholder="Tôi muốn đặt lịch 9h sáng mai">
+                </div>
+                <button onclick="sendWebhook()">Gửi Webhook</button>
+            </div>
+        </div>
+        
+        <div id="callResponse" class="response"></div>
+    </div>
+
+    <!-- ADMIN SECTION -->
+    <div class="section" id="admin">
+        <h2>⚙️ Admin & Testing</h2>
+        
+        <div class="card">
+            <h3>Test API Health</h3>
+            <button onclick="testHealth()">Test API</button>
+            <button class="secondary" onclick="testNLP()">Test NLP</button>
+        </div>
+        
+        <div id="adminResponse" class="response"></div>
+    </div>
+
+    <script>
+        const API_URL = 'http://127.0.0.1:8000/api';
+        let selectedWorkflowId = null;
+        
+        // Update token display
+        function updateTokenDisplay() {
+            const token = localStorage.getItem('access_token');
+            const display = document.getElementById('tokenDisplay');
+            if (token) {
+                display.textContent = token.substring(0, 50) + '...';
+                display.style.color = '#4ade80';
+            } else {
+                display.textContent = 'Chưa đăng nhập';
+                display.style.color = '#f87171';
+            }
+        }
+        
+        updateTokenDisplay();
+        
+        // Show section
+        function showSection(name) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(name).classList.add('active');
+            event.target.classList.add('active');
+        }
+        
+        // Show response
+        function showResponse(elementId, isSuccess, data) {
+            const el = document.getElementById(elementId);
+            el.className = isSuccess ? 'response success' : 'response error';
+            el.innerHTML = `
+                <strong>${isSuccess ? '✅ Thành công!' : '❌ Lỗi'}</strong>
+                <pre>${JSON.stringify(data, null, 2)}</pre>
+            `;
+        }
+        
+        // Get headers with token
+        function getHeaders(includeToken = true) {
+            const headers = {
+                'Content-Type': 'application/json',
+            };
+            if (includeToken) {
+                const token = localStorage.getItem('access_token');
+                if (token) {
+                    headers['Authorization'] = `Bearer ${token}`;
+                }
+            }
+            return headers;
+        }
+        
+        // ============ AUTH ============
+        async function register() {
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const role = document.getElementById('regRole').value;
+            
+            try {
+                const res = await fetch(`${API_URL}/auth/register`, {
+                    method: 'POST',
+                    headers: getHeaders(false),
+                    body: JSON.stringify({ email, password, role })
+                });
+                const data = await res.json();
+                showResponse('authResponse', res.ok, data);
+            } catch (error) {
+                showResponse('authResponse', false, { error: error.message });
+            }
+        }
+        
+        async function login() {
+            const username = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            try {
+                const formData = new URLSearchParams();
+                formData.append('username', username);
+                formData.append('password', password);
+                
+                const res = await fetch(`${API_URL}/auth/token`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: formData
+                });
+                const data = await res.json();
+                
+                if (res.ok) {
+                    localStorage.setItem('access_token', data.access_token);
+                    updateTokenDisplay();
+                }
+                showResponse('authResponse', res.ok, data);
+            } catch (error) {
+                showResponse('authResponse', false, { error: error.message });
+            }
+        }
+        
+        function logout() {
+            localStorage.removeItem('access_token');
+            updateTokenDisplay();
+            showResponse('authResponse', true, { message: 'Đã logout' });
+        }
+        
+        // ============ WORKFLOWS ============
+        async function createWorkflow() {
+            const name = document.getElementById('wfName').value;
+            const description = document.getElementById('wfDesc').value;
+            
+            try {
+                const res = await fetch(`${API_URL}/workflows/`, {
+                    method: 'POST',
+                    headers: getHeaders(),
+                    body: JSON.stringify({ name, description })
+                });
+                const data = await res.json();
+                showResponse('workflowResponse', res.ok, data);
+                if (res.ok) getWorkflows();
+            } catch (error) {
+                showResponse('workflowResponse', false, { error: error.message });
+            }
+        }
+        
+        async function getWorkflows() {
+            try {
+                const res = await fetch(`${API_URL}/workflows/`, {
+                    headers: getHeaders()
+                });
+                const data = await res.json();
+                
+                if (res.ok) {
+                    const list = document.getElementById('workflowList');
+                    list.innerHTML = data.map(wf => `
+                        <div class="workflow-item" onclick="selectWorkflow('${wf.id}', '${wf.name}')">
+                            <strong>${wf.name}</strong><br>
+                            <small>ID: ${wf.id}</small>
+                        </div>
+                    `).join('');
+                }
+                showResponse('workflowResponse', res.ok, data);
+            } catch (error) {
+                showResponse('workflowResponse', false, { error: error.message });
+            }
+        }
+        
+        function selectWorkflow(id, name) {
+            selectedWorkflowId = id;
+            document.getElementById('versionWfId').value = id;
+            document.getElementById('callWfId').value = id;
+            
+            document.querySelectorAll('.workflow-item').forEach(el => {
+                el.classList.remove('selected');
+            });
+            event.target.closest('.workflow-item').classList.add('selected');
+            
+            showResponse('workflowResponse', true, { message: `Đã chọn workflow: ${name}`, id });
+        }
+        
+        async function createVersion() {
+            const workflow_id = document.getElementById('versionWfId').value;
+            const workflow_json = JSON.parse(document.getElementById('versionJson').value || '{}');
+            const change_description = document.getElementById('versionDesc').value;
+            
+            try {
+                const res = await fetch(`${API_URL}/workflows/${workflow_id}`, {
+                    method: 'PUT',
+                    headers: getHeaders(),
+                    body: JSON.stringify({ workflow_json, change_description })
+                });
+                const data = await res.json();
+                showResponse('workflowResponse', res.ok, data);
+            } catch (error) {
+                showResponse('workflowResponse', false, { error: error.message });
+            }
+        }
+        
+        async function getVersions() {
+            const workflow_id = document.getElementById('versionWfId').value;
+            
+            try {
+                const res = await fetch(`${API_URL}/workflows/${workflow_id}/versions`, {
+                    headers: getHeaders()
+                });
+                const data = await res.json();
+                showResponse('workflowResponse', res.ok, data);
+            } catch (error) {
+                showResponse('workflowResponse', false, { error: error.message });
+            }
+        }
+        
+        // ============ CALLS ============
+        async function startCall() {
+            const workflow_id = document.getElementById('callWfId').value;
+            const customer_phone = document.getElementById('callPhone').value;
+            
+            try {
+                const res = await fetch(`${API_URL}/calls/start_call`, {
+                    method: 'POST',
+                    headers: getHeaders(),
+                    body: JSON.stringify({ workflow_id, customer_phone })
+                });
+                const data = await res.json();
+                
+                if (res.ok) {
+                    document.getElementById('webhookCallId').value = data.call_id;
+                }
+                showResponse('callResponse', res.ok, data);
+            } catch (error) {
+                showResponse('callResponse', false, { error: error.message });
+            }
+        }
+        
+        async function sendWebhook() {
+            const call_id = document.getElementById('webhookCallId').value;
+            const speech_to_text = document.getElementById('webhookText').value;
+            
+            try {
+                const res = await fetch(`${API_URL}/calls/webhook`, {
+                    method: 'POST',
+                    headers: getHeaders(),
+                    body: JSON.stringify({ call_id, speech_to_text })
+                });
+                const data = await res.json();
+                showResponse('callResponse', res.ok, data);
+            } catch (error) {
+                showResponse('callResponse', false, { error: error.message });
+            }
+        }
+        
+        // ============ ADMIN ============
+        async function testHealth() {
+            try {
+                const res = await fetch('http://127.0.0.1:8000/');
+                const data = await res.json();
+                showResponse('adminResponse', res.ok, data);
+            } catch (error) {
+                showResponse('adminResponse', false, { error: error.message });
+            }
+        }
+        
+        async function testNLP() {
+            showResponse('adminResponse', true, { 
+                message: 'NLP service đang chạy fallback mode. Để test, gọi webhook với text tiếng Việt.' 
+            });
+        }
+    </script>
+</body>
+</html>

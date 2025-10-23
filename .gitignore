@@ -1,0 +1,27 @@
+﻿# Python
+__pycache__/
+*.py[cod]
+*.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+
+# Environment variables
+.env
+
+# Models (quá lớn cho Git)
+models/phobert-intent-classifier/
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+logs/
+
+# Testing
+.pytest_cache/
+.coverage
