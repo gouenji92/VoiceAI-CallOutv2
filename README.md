@@ -96,10 +96,11 @@ python test_production.py
 - Supabase errors with UUID: Webhook requires a real `call_id` present in `calls` table.
 - Sentiment model warning: The service falls back if the public model is unavailable.
 
-## Changelog (Phase summary)
+## 📚 Documentation
 
-- High-level narrative: `PHASE_SUMMARY.md`
-- Detailed changes: `CHANGELOG.md`
+- **Database Schema**: [`DATABASE_SCHEMA.md`](DATABASE_SCHEMA.md) - Tài liệu chi tiết về cấu trúc database (tiếng Việt)
+- **Phase Summary**: [`PHASE_SUMMARY.md`](PHASE_SUMMARY.md) - Tổng kết giai đoạn RL + Retrain
+- **Changelog**: [`CHANGELOG.md`](CHANGELOG.md) - Chi tiết thay đổi theo phiên bản
 
 ## License
 
