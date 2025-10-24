@@ -56,10 +56,33 @@ class CallbotSkill(Skill):
             return result
 
         elif intent == "hoi_thong_tin":
+            # Try querying RAG API when confidence is sufficient
+            import httpx
             print("[Agent] Dang goi RAG API...")
             if intent_confidence >= confidence_threshold:
-                bot_response = f"Toi da tim thay thong tin lien quan den: {user_input}"
-                result["action_success"] = True  # Provided info
+                try:
+                    url = "http://127.0.0.1:8000/api/rag/search"
+                    params = {"q": user_input, "k": 3}
+                    with httpx.Client(timeout=4.0) as client:
+                        resp = client.get(url, params=params)
+                        if resp.status_code == 200:
+                            data = resp.json()
+                            results = data.get("results", [])
+                            if results:
+                                top = results[0]
+                                snippet = top.get("content", "")
+                                source = top.get("source", "")
+                                bot_response = f"Toi tim duoc thong tin: {snippet}\n(Nguon: {source})"
+                                result["action_success"] = True
+                            else:
+                                bot_response = "Hien chua co thong tin phu hop trong co so tri thuc. Ban mo ta cu the hon duoc khong?"
+                                result["action_success"] = None
+                        else:
+                            bot_response = "He thong tim kiem tam thoi khong kha dung. Ban mo ta cu the hon duoc khong?"
+                            result["action_success"] = None
+                except Exception:
+                    bot_response = "He thong tim kiem tam thoi khong kha dung. Ban mo ta cu the hon duoc khong?"
+                    result["action_success"] = None
             else:
                 bot_response = "Ban co the cho toi biet cu the hon ve thong tin ban can tim hieu duoc khong?"
                 result["action_success"] = None  # Need clarification
