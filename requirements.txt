@@ -20,6 +20,10 @@ python-jose[cryptography]
 # HTTP Client
 httpx
 
+# LLM & Embeddings (RAG providers)
+openai>=1.30.0
+google-generativeai>=0.7.2
+
 # Database
 supabase-py
 
