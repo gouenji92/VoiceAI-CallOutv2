@@ -28,3 +28,11 @@ logs/
 .coverage
 test_production_results.json
 test_results.json
+
+# Knowledge Base (user data - keep structure only)
+data/knowledge_base/*.txt
+data/knowledge_base/*.md
+data/knowledge_base/*.json
+data/knowledge_base/.embeddings.json
+data/knowledge_base/ingested_*.txt
+!data/knowledge_base/README.md

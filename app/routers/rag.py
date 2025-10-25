@@ -26,10 +26,20 @@ async def _build_index_on_startup():
 
 @router.get("/search", summary="RAG search", tags=["RAG"])
 async def rag_search(q: str = Query(..., description="User query"), k: int = 3):
-    """Public search endpoint to retrieve top-k passages."""
+    """
+    Public search endpoint to retrieve top-k passages.
+    Returns empty results if knowledge base is empty (not an error).
+    """
     try:
         results = rag_service.search(q, k=k)
-        return {"query": q, "k": k, "results": results}
+        corpus_size = len(rag_service.documents)
+        return {
+            "query": q, 
+            "k": k, 
+            "results": results,
+            "corpus_size": corpus_size,
+            "message": "Knowledge base is empty. Add data via /ingest or files in data/knowledge_base/" if corpus_size == 0 else None
+        }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -40,5 +50,22 @@ async def rag_ingest(payload: IngestPayload, current_user_id: str = Depends(get_
     try:
         new_size = rag_service.ingest_text(payload.content, source=payload.source)
         return {"message": "ingested", "corpus_size": new_size}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/status", summary="RAG status", tags=["RAG"])
+async def rag_status():
+    """Check RAG system status and corpus information."""
+    try:
+        rag_service.ensure_index()
+        return {
+            "provider": rag_service.provider,
+            "corpus_size": len(rag_service.documents),
+            "is_indexed": rag_service._is_built,
+            "corpus_dir": rag_service.corpus_dir,
+            "cache_enabled": rag_service.provider != "local",
+            "message": "Add knowledge files to data/knowledge_base/ or use /ingest API" if len(rag_service.documents) == 0 else "RAG is ready"
+        }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
