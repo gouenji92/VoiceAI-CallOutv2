@@ -15,20 +15,24 @@ q = Queue('model_tasks', connection=redis_conn)
 def retrain_model(feedback_data_path: str, base_model_path: str):
     """
     Hàm huấn luyện lại mô hình với dữ liệu feedback mới
+    
+    Note: This is a placeholder for incremental retraining.
+    For now, use manual_train.py for model retraining with feedback data.
+    Future implementation should integrate with the feedback loop.
     """
     try:
         logger.info(f"Bắt đầu huấn luyện lại mô hình với dữ liệu từ {feedback_data_path}")
         
-        # Thực hiện huấn luyện (sử dụng logic từ incremental_retrain.py)
-        # TODO: Implement retraining logic
+        # Implementation plan:
+        # 1. Load feedback data from CSV
+        # 2. Merge with existing training data
+        # 3. Run fine-tuning with manual_train.py logic
+        # 4. Save new model checkpoint
+        # 5. Reload model in NLPService
         
-        logger.info("Huấn luyện hoàn tất")
+        logger.warning("Retraining logic not yet implemented. Use manual_train.py instead.")
         
-        # Thông báo cho ModelManager để reload mô hình
-        model_manager = ModelManager()
-        model_manager.reload_model()
-        
-        return True
+        return False
     except Exception as e:
         logger.error(f"Lỗi trong quá trình huấn luyện lại: {str(e)}")
         return False

@@ -50,26 +50,19 @@ Terminal dashboard (optional):
 python monitor_rl_dashboard.py
 ```
 
-## Testing shortcuts
+## Testing
 
-Minimal API check:
+Run comprehensive system test suite (API health, model inference, NLP service, RL feedback, RAG, auth, agent):
 ```powershell
-python quick_test.py
+python test_system.py
 ```
 
-Validate retrained model on weak intents (direct HF inference, no service):
-```powershell
-python test_retrained_model.py
-```
+Test results are saved to `test_results.json` with detailed diagnostics for each component.
 
-API integration + RL selection (uses FastAPI services):
+For quick startup testing, use:
 ```powershell
-python test_api_retrained.py
-```
-
-Production-style test sweep (requires server running):
-```powershell
-python test_production.py
+START.bat
+# Then run test_system.py in another terminal
 ```
 
 ## Endpoints (high level)

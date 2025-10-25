@@ -1,6 +1,6 @@
 """
-Simple Manual Training Loop - No Trainer Class
-Bypass Accelerator compatibility issues
+Intent Model Training Script - PhoBERT Fine-tuning
+Trains intent classification model on augmented Vietnamese dataset
 """
 
 import torch
@@ -14,7 +14,7 @@ from datetime import datetime
 from tqdm import tqdm
 
 print("=" * 70)
-print("MANUAL TRAINING - AUGMENTED DATASET V2")
+print("INTENT MODEL TRAINING - AUGMENTED DATASET V2")
 print("=" * 70)
 
 # 1. Load dataset
@@ -66,7 +66,8 @@ def tokenize_batch(texts):
 # Create dataloaders
 batch_size = 16
 
-class SimpleDataset(torch.utils.data.Dataset):
+class IntentDataset(torch.utils.data.Dataset):
+    """PyTorch Dataset for intent classification training"""
     def __init__(self, texts, labels):
         self.texts = texts
         self.labels = labels
@@ -77,8 +78,8 @@ class SimpleDataset(torch.utils.data.Dataset):
     def __getitem__(self, idx):
         return self.texts[idx], self.labels[idx]
 
-train_dataset = SimpleDataset(train_df['text'].tolist(), train_df['label_id'].tolist())
-val_dataset = SimpleDataset(val_df['text'].tolist(), val_df['label_id'].tolist())
+train_dataset = IntentDataset(train_df['text'].tolist(), train_df['label_id'].tolist())
+val_dataset = IntentDataset(val_df['text'].tolist(), val_df['label_id'].tolist())
 
 train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
 val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=32, shuffle=False)

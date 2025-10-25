@@ -33,6 +33,7 @@ def get_current_user_id(token: str = Depends(oauth2_scheme)) -> str:
     except JWTError:
         raise credentials_exception
     
-    # TODO: Kiểm tra user có thật trong DB không (nếu cần)
+    # Note: Token validation is sufficient for most use cases.
+    # Additional DB checks can be added here if needed for revoked tokens.
     
     return token_data.account_id

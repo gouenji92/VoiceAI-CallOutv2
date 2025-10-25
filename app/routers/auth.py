@@ -4,22 +4,24 @@ from app.database import supabase
 from app.models import Token, UserCreate
 from app.config import settings
 from jose import jwt
-from datetime import datetime, timedelta, timezone # Đã import timezone
+from datetime import datetime, timedelta, timezone
 from passlib.context import CryptContext
+import logging
 
 router = APIRouter() 
+logger = logging.getLogger(__name__)
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def get_password_hash(password):
     # Bcrypt chỉ hỗ trợ mật khẩu tối đa 72 bytes
     # Cắt theo BYTES, không phải ký tự
-    print(f"[DEBUG] Mật khẩu nhận được: '{password}' (độ dài: {len(password)} ký tự, {len(password.encode('utf-8'))} bytes)")
+    logger.debug(f"Password received: length={len(password)} chars, {len(password.encode('utf-8'))} bytes")
     password_bytes = password.encode('utf-8')
     if len(password_bytes) > 72:
         # Cắt theo bytes và decode lại, xử lý ký tự bị cắt giữa chừng
         password = password_bytes[:72].decode('utf-8', errors='ignore')
-        print(f"[DEBUG] Đã cắt xuống: '{password}' ({len(password.encode('utf-8'))} bytes)")
+        logger.debug(f"Password truncated to {len(password.encode('utf-8'))} bytes")
     return pwd_context.hash(password)
 
 def verify_password(plain_password, hashed_password):
@@ -31,7 +33,7 @@ def verify_password(plain_password, hashed_password):
 
 def create_access_token(data: dict, expires_delta: timedelta):
     to_encode = data.copy()
-    expire = datetime.now(timezone.utc) + expires_delta # Đã sửa lỗi
+    expire = datetime.now(timezone.utc) + expires_delta
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, settings.JWT_SECRET_KEY, algorithm=settings.JWT_ALGORITHM)
     return encoded_jwt
@@ -82,15 +84,14 @@ async def register_user(user_in: UserCreate):
             "role": user_in.role
         }
         
-        print(f"[DEBUG] Đang insert user: {user_in.email}")
+        logger.info(f"Creating new user account: {user_in.email}")
         
         # Insert vào database
         insert_response = supabase.table("accounts").insert(new_user).execute()
         
         # Kiểm tra lỗi từ Supabase
         if hasattr(insert_response, 'error') and insert_response.error:
-            print(f"[LỖI ĐĂNG KÝ] Full error object: {insert_response.error}")
-            print(f"[LỖI ĐĂNG KÝ] Error type: {type(insert_response.error)}")
+            logger.error(f"Supabase error during registration: {insert_response.error}")
             error_detail = getattr(insert_response.error, 'message', str(insert_response.error))
             raise HTTPException(status_code=500, detail=f"Lỗi Supabase: {error_detail}")
         
@@ -98,13 +99,11 @@ async def register_user(user_in: UserCreate):
         if not insert_response.data:
             raise HTTPException(status_code=500, detail="Không nhận được dữ liệu từ Supabase sau khi insert")
             
-        print(f"[THÀNH CÔNG] Đã tạo tài khoản: {user_in.email}")
+        logger.info(f"Successfully created account: {user_in.email}")
         return {"message": "Tạo tài khoản thành công", "email": user_in.email}
         
     except HTTPException:
         raise
     except Exception as e:
-        print(f"[LỖI BẤT NGỜ] {type(e).__name__}: {str(e)}")
-        import traceback
-        traceback.print_exc()
+        logger.exception(f"Unexpected error during registration: {type(e).__name__}: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Lỗi không xác định: {str(e)}")

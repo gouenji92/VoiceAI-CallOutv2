@@ -19,12 +19,10 @@ class CallbotSkill(Skill):
         entities = nlp_data.get("entities", {})
 
         print(f"[Agent] Nhan duoc State: Intent={intent}, Sentiment={sentiment}")
-        # print(f"[Agent] Dang su dung workflow: {workflow_json.get('name')}") # Lấy tên từ JSON
 
         # --- 2. Logic Định tuyến (Routing Logic) ---
-        
-        # TODO: Đây là nơi bạn dùng `workflow_json` để quyết định câu trả lời
-        # (Ví dụ: "if intent == 'dat_lich' AND node_hien_tai == 'node_chao_hoi': ...")
+        # workflow_json contains the workflow configuration that can be used
+        # for more sophisticated routing and business logic customization
         
         # Logic xử lý dựa trên intent và confidence
         confidence_threshold = 0.6  # Ngưỡng tin cậy cho intent

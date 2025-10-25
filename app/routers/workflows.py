@@ -6,9 +6,11 @@ from app.models import (
 )
 from app.dependencies import get_current_user_id
 import uuid
+import logging
 from typing import List
 
 router = APIRouter()
+logger = logging.getLogger(__name__)
 
 @router.post("/", response_model=Workflow, status_code=status.HTTP_201_CREATED)
 async def create_workflow(
@@ -73,9 +75,9 @@ async def create_new_workflow_version(
             "workflow_json": version_data.workflow_json,
             "change_description": version_data.change_description
         }
-        print(f"[DEBUG] Tạo version cho workflow {workflow_id}: {new_version_dict}")
+        logger.debug(f"Creating new workflow version for workflow_id={workflow_id}")
         ver_res = supabase.table("workflow_versions").insert(new_version_dict).execute()
-        print(f"[DEBUG] Supabase response: {ver_res}")
+        logger.debug(f"Supabase version insert response received")
         
         if not ver_res.data:
             raise HTTPException(status_code=500, detail="Không thể tạo version")
@@ -95,7 +97,7 @@ async def create_new_workflow_version(
     except HTTPException:
         raise
     except Exception as e:
-        print(f"[ERROR] Lỗi tạo version: {type(e).__name__}: {str(e)}")
+        logger.exception(f"Error creating workflow version: {type(e).__name__}: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Lỗi tạo version: {str(e)}")
 
 @router.get("/{workflow_id}/versions", response_model=List[WorkflowVersion])
