@@ -27,3 +27,4 @@ logs/
 .pytest_cache/
 .coverage
 test_production_results.json
+test_results.json
